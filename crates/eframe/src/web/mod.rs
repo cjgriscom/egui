@@ -5,10 +5,12 @@
 
 mod app_runner;
 mod backend;
+mod edit_context;
 mod events;
 mod input;
 mod panic_handler;
 mod text_agent;
+mod text_agent_wrapper;
 mod web_logger;
 mod web_runner;
 

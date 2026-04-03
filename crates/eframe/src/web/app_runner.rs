@@ -4,7 +4,7 @@ use egui::{TexturesDelta, UserData, ViewportCommand};
 
 use crate::{App, epi, web::web_painter::WebPainter};
 
-use super::{NeedRepaint, now_sec, text_agent::TextAgent};
+use super::{NeedRepaint, now_sec, text_agent_wrapper::TextAgentWrapper};
 
 pub struct AppRunner {
     #[allow(clippy::allow_attributes, dead_code)]
@@ -16,7 +16,7 @@ pub struct AppRunner {
     app: Box<dyn epi::App>,
     pub(crate) needs_repaint: Arc<NeedRepaint>,
     last_save_time: f64,
-    pub(crate) text_agent: TextAgent,
+    pub(crate) text_agent: TextAgentWrapper,
 
     // If not empty, the painter should capture n frames from now.
     // zero means capture the exact next frame.
@@ -44,7 +44,7 @@ impl AppRunner {
         canvas: web_sys::HtmlCanvasElement,
         web_options: crate::WebOptions,
         app_creator: epi::AppCreator<'static>,
-        text_agent: TextAgent,
+        text_agent: TextAgentWrapper,
     ) -> Result<Self, String> {
         let egui_ctx = egui::Context::default();
 
@@ -223,7 +223,7 @@ impl AppRunner {
 
     /// Does the eframe app have focus?
     ///
-    /// Technically: does either the canvas or the [`TextAgent`] have focus?
+    /// Technically: does either the canvas or the [`TextAgentWrapper`] have focus?
     pub fn has_focus(&self) -> bool {
         let window = web_sys::window().unwrap();
         let document = window.document().unwrap();
